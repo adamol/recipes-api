@@ -1,0 +1,41 @@
+# Features
+
+standard CRUD of recipes
+
+middleware to do more than view
+    - can only update/delete the recipes you committed (middleware)
+    - authentication with JSON WebToken
+    - registration through some curl endpoint
+        + email?
+
+group recipes by some category for easier filtering by index
+
+add recipes to your favorites
+
+add recipes to a temporary session
+    - download pdf for recipes in current sessions
+
+
+# DB Tables
+
+recipes
+- id
+- name
+- ingredients
+- description
+- some taggable property?
+- created_at
+- updated_at
+
+users
+- id
+- email
+- password
+- created_at
+- updated_at
+
+favorites
+- user_id
+- recipe_id
+- created_at
+- updated_at
