@@ -1,28 +1,29 @@
-const express = require('express')
-const app = express()
+var express    = require('express')
+var app        = express()
 var bodyParser = require('body-parser')
+var morgan     = require('morgan')
+var mongoose   = require('mongoose')
+var jwt = require('jsonwebtoken')
+var config = require('./config')
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+var User = require('./app/models/user')
+var Recipe = require('./app/models/recipe')
 
+// configuration
+var port = process.env.PORT || 3000;
+mongoose.connect(config.database)
+app.set('supersecret', config.secret);
+
+// set up bodyParser to read POST requests and URL params
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/recipes_db')
+// use morgan to log requests
+app.use(morgan('dev'))
 
-var Schema = mongoose.Schema;
-
-var RecipeSchema = new Schema({
-    id: Schema.ObjectId,
-    slug: String,
-    name: String,
-    ingredients: {type: Array, "default": []},
-    description: String,
-}, {timestamps: true})
-
-var Recipe = mongoose.model('Recipe', RecipeSchema);
-
+// ==================================
+// ===== routes =====================
+// ==================================
 app.get('/', function(req, res) {
     res.send('Hello World')
 })
@@ -59,6 +60,6 @@ app.post('/recipes', function(req, res) {
     });
 })
 
-app.listen(3000, function() {
-    console.log('Example app listening on port 3000!')
+app.listen(port, function() {
+    console.log('App listening on port ' + port)
 })
