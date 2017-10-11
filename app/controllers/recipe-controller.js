@@ -13,10 +13,10 @@ exports.index = function(req, res) {
 };
 
 exports.show = function(req, res) {
-    Recipe.find({slug: req.params.slug}, function(err, recipes) {
+    Recipe.findOne({'slug': req.params.slug}, function(err, recipe) {
         if (err) res.send(err);
 
-        res.json(recipes)
+        res.json(recipe)
     });
 };
 
@@ -32,7 +32,24 @@ exports.store = function(req, res) {
     recipe.save(function(err) {
         if (err) res.send(err);
 
-        res.json({message: 'Recipe inserted into database'});
+        res.json({message: 'Recipe successfully saved!', recipe});
+    });
+};
+
+exports.update = function(req, res) {
+    Recipe.findOne({'slug': req.params.slug}, function(err, recipe) {
+        if (err) res.send(err);
+
+        Object.assign(recipe, req.body).save((err, recipe) => {
+            if (err) res.send(err);
+            res.json({ message: 'Recipe successfully updated!', recipe });
+        });
+    });
+};
+
+exports.destroy = function(req, res) {
+    Recipe.remove({ slug:  req.params.slug }, (err, _) => {
+        res.json({ message: 'Recipe successfully deleted!' });
     });
 };
 
