@@ -21,22 +21,22 @@ app.get('/', function(req, res) {
     res.send('Hello World')
 })
 
-var AuthController = require('./app/controllers/AuthController');
-app.post('/register', AuthController.register);
-app.post('/authenticate', AuthController.authenticate);
+var authController = require('./app/controllers/auth-controller');
+app.post('/register', authController.register);
+app.post('/authenticate', authController.authenticate);
 
-var RecipeController = require('./app/controllers/RecipeController');
-app.get('/recipes', RecipeController.index);
-app.get('/recipes/:slug', RecipeController.show);
-app.post('/recipes', RecipeController.store);
+var recipeController = require('./app/controllers/recipe-controller');
+app.get('/recipes', recipeController.index);
+app.get('/recipes/:slug', recipeController.show);
+app.post('/recipes', recipeController.store);
 
 var mw = require('./app/middleware');
 app.use('/api', mw.jwt);
 
-var UserController = require('./app/controllers/UserController');
-app.get('/api/users', UserController.index);
+var userController = require('./app/controllers/user-controller');
+app.get('/api/users', userController.index);
 
 app.listen(port, function() {
     console.log('App listening on port ' + port)
-})
+});
 
